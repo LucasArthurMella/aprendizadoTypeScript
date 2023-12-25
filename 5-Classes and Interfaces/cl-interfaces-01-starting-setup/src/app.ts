@@ -1,36 +1,52 @@
-class Department {
-    name: string = "DEFAULT";
 
-    private employees: string[] = [];
 
-    constructor(n: string){
-        this.name = n;
-    }
-
-    describe(this: Department) {
-        console.log("Department: " + this.name);
-    }
-
-    addEmployee(employee: string){
-        this.employees.push(employee);
-    }
-
-    printEmployeeInformation(){
-        console.log(this.employees.length);
-        console.log(this.employees);
-    }
-
+interface AddFn {
+    (a: number, b:number): number
 }
 
-const accounting = new Department("Accounting");
+let add: AddFn;
 
-accounting.addEmployee("Max");
-accounting.addEmployee("Manu");
+add = (n1:number, n2:number) => {
+   return n1 + n2; 
+}
 
-accounting.addEmployee("Anna");
+interface Named {
+    readonly name?: string;
+    outputName?: string;
+}
 
-accounting.describe();
-accounting.printEmployeeInformation();
+interface Greetable extends Named{
+    greet(phase: string): void;
+}
 
-// const accountingCopy = { name: "s", describe: accounting.describe };
-// accountingCopy.describe();
+class Person implements Greetable {
+    age = 30;
+    name?: string;
+    constructor(n?:string){
+        if (n) {
+            this.name = n;
+        }
+    }
+
+    greet(phrase: string){
+        if(this.name){
+            console.log(phrase + ' ' + this.name);
+        }else{
+            console.log("hi");
+        }
+    }}
+
+    
+let user1: Greetable;
+//because Person implements Greetable, it's ok to instantiate Person in a variable that has Greetable type
+user1 = new Person("Max");
+
+user1 = {
+    name: "Max",
+    greet(phrase: string){
+        console.log(phrase + ' ' + this.name);
+    }
+};
+
+user1.greet("Hi there - I am");
+console.log(user1);
